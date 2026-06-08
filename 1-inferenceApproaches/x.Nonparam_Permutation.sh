@@ -85,13 +85,15 @@ fi
 
 if [ $thresh_opt == 'tfce' ]; then # run randomise with TFCE
   randomise -i ${output_dir}/allbetamaps.nii.gz -o ${output_dir}/${contrastName} \
-    -m ${mask} -1 -T -v 5 -n ${perm} --glm_output
+    -m ${mask} -d ${output_dir}/design.mat -t ${output_dir}/design.con  -e ${output_dir}/design.grp \
+    -T -v 5 -n ${perm} --glm_output
   # remove -v 5 (variance smoothing with sigma 5mm) if sample size > 20
   # -T does the following: threshold-free cluster enhancement; image remains voxel-wise and "un-clustered"
 
 elif [ $thresh_opt == 'vox_based' ]; then   # run randomise with voxel-based thresholding
   randomise -i ${output_dir}/allbetamaps.nii.gz -o ${output_dir}/${contrastName} \
-    -m ${mask} -1 -x -v 5 -n ${perm} --glm_output
+    -m ${mask} -d ${output_dir}/design.mat -t ${output_dir}/design.con  -e ${output_dir}/design.grp \
+    -x -v 5 -n ${perm} --glm_output
   # remove -v 5 (variance smoothing with sigma 5mm) if sample size > 20
   # -x does the following: uses the null distribution of the max voxel-wise test statistic
 
