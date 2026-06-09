@@ -181,9 +181,22 @@ do
     echo "Minimum cluster size is $rounded_clustNum"
     echo "Thresholded at p<0.${pthr} and clustered using alpha<0.${athr}"
 
-    ## Actually threshold and cluster group results based on info from 3dClustSim
-    ## You will need to change the parameters manually below based on results of 3dClustSim and the desired clustering (e.g. -1sided, -2sided, -bisided)
-    input_file="${parent_dir}/derivatives/${subject}/${session}/func/${task}/output.GLM_${model}_ConsOrth_concat4runs_sm_1ses/${subject}_${task}_TaskReg_tstat.nii.gz"
+    ## Threshold and cluster group results based on info from 3dClustSim
+    ## Manually change the parameters below based on results of 3dClustSim and the desired clustering (e.g. -1sided, -2sided, -bisided)
+    if [ ${run_num} == "4" ]; then
+      echo "******************************************"
+      echo "Running clusterize with 4 concatenated runs"
+      echo "******************************************"
+        
+        input_file="${parent_dir}/derivatives/${subject}/${session}/func/${task}/output.GLM_${model}_ConsOrth_concat4runs_sm_1ses/${subject}_${task}_TaskReg_tstat.nii.gz"
+    
+    elif [ ${run_num} == "3" ]; then
+      echo "******************************************"
+      echo "Running clusterize with 3 concatenated runs"
+      echo "******************************************"
+        input_file="${parent_dir}/derivatives/${subject}/${session}/func/${task}/output.GLM_${model}_ConsOrth_concat3${fold_id}runs_sm_1ses/${subject}_${task}_TaskReg_tstat.nii.gz"
+    
+    fi
 
     3dClusterize -inset ${input_file} \
     -mask ${brain_mask} -ithr 0 -idat 0 -1sided RIGHT_TAIL p=0.${pthr} -NN 1 -clust_nvox ${rounded_clustNum} \
